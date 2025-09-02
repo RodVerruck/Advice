@@ -120,4 +120,5 @@ Sintoma: O histórico mostra uma ação, mas o e-mail cadastrado é inválido.
 Diagnóstico: O sistema usa o dado cadastrado para rotular o evento no histórico, mas a ação foi disparada por um link público enviado para o e-mail correto.
 Investigação: Encontrar a prova técnica da ação.
 No RedeOPME (legado), consultar gopme_mailtracks e analisar o JSON no campo read_confir para obter data/hora, IP e user agent da leitura.
+
 No AdviceMed 2.0, usar o Datadog APM Traces. Filtrar pelo horário exato da ação, método (POST/PATCH), e procurar no trace encontrado as tags Client IP, User Agent, e user.email (se houver).
