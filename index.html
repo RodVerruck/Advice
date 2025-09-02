@@ -1,90 +1,21 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Biblioteca de Documentos</title>
-  <style>
-    :root{--bg:#f6f7f9;--card:#fff;--b:#e5e7eb;--link:#0a58ca}
-    *{box-sizing:border-box}
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#222;margin:0}
-    header{padding:20px 24px}
-    h1{margin:0;display:flex;gap:.6rem;align-items:center}
-    .wrap{display:grid;grid-template-columns:320px 1fr;gap:16px;padding:0 16px 16px}
-    .panel{background:var(--card);border:1px solid var(--b);border-radius:12px;overflow:hidden}
-    .list{max-height:calc(100vh - 160px);overflow:auto;padding:8px}
-    .item{display:block;padding:12px 10px;border-radius:8px;color:var(--link);text-decoration:none;font-weight:650}
-    .item:hover{background:#f2f6ff}
-    .viewer{height:calc(100vh - 120px)}
-    iframe{width:100%;height:100%;border:0}
-    .search{padding:10px;border-bottom:1px solid var(--b);display:flex;gap:8px}
-    .search input{width:100%;padding:10px;border:1px solid var(--b);border-radius:8px}
-    .hint{padding:10px;border-top:1px solid var(--b);font-size:12px;color:#555}
-  </style>
-</head>
-<body>
-  <header>
-    <h1>📚 Biblioteca de Documentos</h1>
-    <p style="margin:.4rem 0 0;">Clique em um documento para visualizar. Se o PDF tiver OCR, o conteúdo fica pesquisável.</p>
-  </header>
+<h1><span class="logo">📚</span> Biblioteca de Documentos</h1>
+  <p>Selecione um arquivo abaixo:</p>
+  <ul>
+    <li><a href="https://rodverruck.github.io/Advice/analytibrf.pdf" target="_blank">ANALYTICARE – Fluxo e Orientações – BRF</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/analytifrg.pdf" target="_blank">ANALYTICARE – Fluxo e Orientações – FRG (Medicação Alto Custo)</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/dicionariodedados.xlsx" target="_blank">Dicionário de Dados (Excel)</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/fluxoanalytibradesco.pdf" target="_blank">Fluxo AnalyticCare Plus – Bradesco Saúde</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/fluxoanalyticare.pdf" target="_blank">Fluxo AnalyticCare</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/fluxogeralanalyti.pdf" target="_blank">Fluxo Geral – AnalyticCare</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/fluxojm.pdf" target="_blank">Fluxo JM</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/fluxosop.pdf" target="_blank">Fluxo SOP</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/fluxonegociacaoanalyti.pdf" target="_blank">Fluxo Negociação – AnalyticCare</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/fluxogramabuymed.pdf" target="_blank">Fluxograma BuyMed</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/fluxoadvicemed2.0sop.jpg" target="_blank">Fluxos AdviceMed 2.0 – SOP (Imagem)</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/manualclienteanalyti2.0.pdf" target="_blank">Manual Cliente – AnalyticCare 2.0</a></li>
+    <li><a href="https://rodverruck.github.io/Advice/script.txt" target="_blank">Script (TXT)</a></li>
+  </ul>
 
-  <div class="wrap">
-    <section class="panel">
-      <div class="search">
-        <input id="q" type="search" placeholder="Filtrar por título…" />
-      </div>
-      <div id="list" class="list"></div>
-      <div class="hint">
-        Se aparecer 404, confirme o nome do arquivo na raiz do repositório.
-      </div>
-    </section>
-
-    <section class="panel viewer">
-      <iframe id="frame" src="" title="Visualizador de documentos"></iframe>
-    </section>
-  </div>
-
-  <script>
-    const base = "https://rodverruck.github.io/Advice/"; // seu Pages
-    const docs = [
-      {file:"analytibrf.pdf",                title:"ANALYTICARE – Fluxo e Orientações – BRF"},
-      {file:"analytifrg.pdf",                title:"ANALYTICARE – Fluxo e Orientações – FRG (Medicação Alto Custo)"},
-      {file:"dicionariodedados.xlsx",        title:"Dicionário de Dados (Excel)"},
-      {file:"fluxoanalyticibradesco.pdf",    title:"Fluxo AnalyticCare Plus – Bradesco Saúde"},
-      {file:"fluxoanalyticare.pdf",          title:"Fluxo AnalyticCare"},
-      {file:"fluxogeralanalyti.pdf",         title:"Fluxo Geral – AnalyticCare"},
-      {file:"fluxojm.pdf",                   title:"Fluxo JM"},
-      {file:"fluxosop.pdf",                  title:"Fluxo SOP"},
-      {file:"fluxonegociacaoanalyti.pdf",    title:"Fluxo Negociação – AnalyticCare"},
-      {file:"fluxogramabuymed.pdf",          title:"Fluxograma BuyMed (PDF)"},
-      {file:"fluxoadvicemed2.0sop.jpg",      title:"Fluxos AdviceMed 2.0 – SOP (Imagem)"},
-      {file:"manualclienteanalyti2.0.pdf",   title:"Manual Cliente – AnalyticCare 2.0"},
-      {file:"script.txt",                    title:"Script (TXT)"}
-    ];
-
-    const list = document.getElementById("list");
-    const frame = document.getElementById("frame");
-    const q = document.getElementById("q");
-
-    function render(filter=""){
-      list.innerHTML = "";
-      const f = filter.trim().toLowerCase();
-      docs
-        .filter(d => d.title.toLowerCase().includes(f))
-        .forEach(d => {
-          const a = document.createElement("a");
-          a.className = "item";
-          a.textContent = d.title;
-          a.href = base + encodeURIComponent(d.file);
-          a.onclick = (e) => { e.preventDefault(); frame.src = a.href; };
-          list.appendChild(a);
-        });
-      // abre o primeiro da lista
-      const first = list.querySelector(".item");
-      if (first) { frame.src = first.href; }
-    }
-    q.addEventListener("input", e => render(e.target.value));
-    render();
-  </script>
+  <p><small>Se algum link ainda der 404, confira: (1) se o arquivo existe na <strong>raiz</strong> do repositório, (2) se o nome bate exatamente (maiúsculas/minúsculas e extensão) e (3) se o Pages está em <em>Settings → Pages → Source: main / root</em>.</small></p>
 </body>
 </html>
