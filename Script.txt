@@ -1,0 +1,123 @@
+Sumário Geral de Conhecimento
+Este documento consolida informações sobre os fluxos de trabalho e sistemas da AdviceHealth, incluindo AdviceMed 2.0 (Junta Médica e Segunda Opinião), BuyMed e RedeOPME (Legado), além de processos de diagnóstico de problemas utilizando ferramentas como Datadog e consultas diretas ao banco de dados.
+1. Sistema: AdviceMed 2.0
+O AdviceMed 2.0 é a plataforma principal para gestão de processos de regulação médica, como Juntas Médicas e Segundas Opiniões.
+1.1. Fluxo de Junta Médica
+Objetivo: Gerenciar o processo de desempate técnico-assistencial quando há divergência entre a operadora de saúde e o profissional assistente do beneficiário.
+Fases Principais:
+Preparação de Junta Médica: Desde o cadastro inicial até a decisão formal de abrir a junta.
+Emissão de Parecer Junta Médica: Desde a notificação formal até a finalização do processo com o parecer do desempatador.
+Perfis de Usuário:
+EQUIPE ADMINISTRATIVA: Tarefas de cadastro, mediação, indicação de profissionais.
+EQUIPE TÉCNICA: Análises técnicas, revisão de pareceres, notificações.
+SUPERVISOR: Visualização e acompanhamento.
+AUDITOR: Validação final de conformidade (rito ANS).
+OPERADORA: Cliente que inicia o processo (cadastro) e valida etapas.
+PROFISSIONAL DESEMPATADOR: Médico especialista externo que emite o parecer final.
+Etapas Detalhadas:
+Rascunho (Cadastro): Operadora inicia o protocolo.
+Análise Administrativa: Equipe AdviceMed verifica a qualidade dos dados.
+Análise Técnica: Equipe AdviceMed analisa as divergências técnicas.
+Indicação do Desempatador: Equipe Administrativa indica 4 profissionais.
+Tentativa de Consenso: Mediação com profissional assistente para evitar a junta formal.
+Sucesso ("sim"): Processo vai para "Consenso" e "Notificação de Fechamento".
+Falha ("não"): Processo segue para a junta formal.
+Abertura Junta: Envio formal das notificações de abertura.
+Notificação de Abertura: Sistema aguarda a confirmação de leitura (visualização) das notificações pelo beneficiário e profissional assistente.
+Escolha do Desempatador: O profissional assistente tem um prazo (ex: 48h) para escolher um dos 4 indicados. Se não o fizer, a AdviceMed escolhe.
+Aguardando Parecer Desempatador: O desempatador analisa o caso e elabora o parecer. Pode solicitar exames adicionais, o que coloca o processo em pendência.
+Revisão: Equipe Técnica da AdviceMed revisa o parecer.
+Validação Parecer (Opcional/Parametrizável): A Operadora pode visualizar e aprovar/reprovar o parecer antes da assinatura.
+Aguardando Assinatura: O desempatador assina digitalmente o parecer final.
+Notificação de Fechamento: As partes (beneficiário, assistente) são notificadas sobre a conclusão e o resultado.
+Auditoria: Equipe de auditoria verifica se todo o rito da ANS foi cumprido.
+Finalizado: Processo concluído.
+1.2. Fluxo de Segunda Opinião
+Objetivo: Obter um parecer técnico de um especialista para complementar ou confirmar uma decisão médica prévia. É um fluxo mais simples que o de Junta Médica.
+Perfis de Usuário: Similares ao de Junta Médica, mas com o "PROFISSIONAL ESPECIALISTA" no lugar do "PROFISSIONAL DESEMPATADOR".
+Etapas Detalhadas:
+Rascunho (Cadastro): Início do protocolo.
+Análise Administrativa: Verificação dos dados.
+Indicação do Especialista: Equipe Administrativa indica o especialista.
+Aguardando Parecer Especialista: Especialista analisa o caso e elabora o parecer.
+Revisão: Equipe Técnica revisa o parecer.
+Rejeitado: Volta para revisão/correção.
+Aprovado: Segue para assinatura.
+Aguardando Assinatura: O especialista assina o parecer.
+Finalizado: Processo concluído.
+1.3. Integração com Octágora (Notificações)
+A Octágora é a ferramenta utilizada para realizar as notificações externas (e-mail, SMS, etc.) para beneficiários e profissionais assistentes.
+Pontos de Disparo de Notificação (Junta Médica):
+Abertura da Junta Médica: Após a tentativa de consenso falhar e o processo seguir para a abertura formal.
+Solicitação de Exames Adicionais: Quando o desempatador solicita mais informações.
+Conclusão por Consenso: Quando um acordo é alcançado.
+Finalização do Processo (Fechamento): Quando o parecer final é assinado e disponibilizado.
+Cancelamento ou Suspensão: Para manter as partes informadas.
+2. Sistema: BuyMed (Plataforma de Negociações)
+Objetivo: Conectar Operadoras de Saúde e Fornecedores para cotação, negociação e compra de OPMEs (Órteses, Próteses e Materiais Especiais) e outros materiais.
+Perfis de Usuário:
+OPERADORA: Comprador. Inicia cotações, negocia, autoriza e audita.
+FORNECEDOR: Vendedor. Responde a cotações, negocia, informa materiais utilizados e emite documentos fiscais.
+Fluxo Detalhado:
+Cadastrar Cotação: A Operadora preenche informações gerais, profissionais, procedimentos, prestador e materiais.
+Pendente Cotação: O Fornecedor recebe o convite, analisa os dados e insere sua proposta de valores para os itens.
+Negociar Eletivo: A Operadora recebe as propostas. Pode aceitar, cancelar, solicitar correção ou fazer uma contraproposta.
+Em Negociação: Estado de "pingue-pongue" onde Operadora e Fornecedor trocam contrapropostas.
+Escolher Materiais: Após a negociação, a Operadora seleciona os itens e fornecedores finais que serão autorizados.
+Aguardando Autorização da Operadora: A Operadora insere a data do procedimento e formaliza o pedido.
+Laudo: Após o procedimento, o Fornecedor (ou Prestador/Operadora) informa os materiais efetivamente utilizados.
+Auditoria: A Operadora valida o laudo e as informações do que foi utilizado.
+Pendente Nota Fiscal: Aguarda o Fornecedor anexar a NF.
+Nota Fiscal Anexada: A Operadora audita a NF, pode solicitar correção ou solicitar o boleto.
+Autorizar Pagamento / Concluído: Processo finalizado.
+3. Sistema: RedeOPME (Legado)
+Sistema mais antigo, mas que ainda possui funcionalidades importantes, especialmente no que tange ao registro e rastreamento de comunicações por e-mail (Mailtrack).
+Tabela Relevante: redeopme.gopme_mailtracks
+Armazena um registro para cada e-mail enviado pelo sistema.
+recipient: E-mail e nome do destinatário.
+title: Assunto do e-mail.
+created_at: Data e hora de envio.
+read_confir: Campo crucial. É um JSON que armazena a prova técnica da leitura do e-mail (quando o pixel de rastreamento é carregado). Contém:
+HTTP_USER_AGENT: Informações do navegador e sistema operacional do leitor.
+REQUEST_TIME_FLOAT: Timestamp Unix/Epoch da leitura.
+REMOTE_ADDR: Endereço IP de onde partiu a leitura.
+lc_stamped_file: Caminho para um documento PDF "carimbado" que serve como prova da notificação/leitura. Pode estar null para alguns tipos de notificação.
+4. Processos de Diagnóstico e Investigação (Troubleshooting)
+4.1. Ferramentas Utilizadas
+Ferramentas do Desenvolvedor do Navegador (F12):
+Console: Para ver erros de JavaScript (frontend), como TypeError, que geralmente indicam problemas com os dados recebidos da API.
+Network (Rede): Para inspecionar todas as requisições HTTP. Essencial para ver:
+Status Code: 2xx (Sucesso), 4xx (Erro do Cliente - ex: 400 Bad Request, 403 Forbidden, 404 Not Found), 5xx (Erro do Servidor).
+Payload/Request Body: O que o frontend está enviando para o backend.
+Response Body: O que o backend está retornando (a chave para entender muitos erros 4xx e 5xx).
+Datadog:
+APM (Traces): Ferramenta principal para investigar o comportamento do backend. Permite:
+Rastrear uma requisição completa (frontend -> backend -> banco de dados).
+Filtrar por tempo, status_code, method (POST, GET, etc.), user.id, user.email, e outras tags customizadas.
+Analisar Logs Correlacionados, que mostram a mensagem de erro exata (traceback) que ocorreu no servidor durante a execução de um trace.
+Consultas SQL Diretas ao Banco de Dados:
+Para verificar o estado real dos dados, independentemente do que a interface mostra.
+Tabelas Chave: advicehealth.advicemed_process, advicehealth.advicemed_file, advicehealth.process_audit, redeopme.gopme_mailtracks, tabelas de log de status (SLA).
+Consultar INFORMATION_SCHEMA.TRIGGERS para investigar se há gatilhos que possam causar efeitos colaterais em outras tabelas.
+4.2. Padrões de Problemas Comuns e Como Investigá-los
+Problema: Campos numéricos exportados como texto no Excel.
+Sintoma: Cliente (ex: VIVEST) não consegue usar tabelas dinâmicas ou fazer cálculos.
+Diagnóstico: Confirmar no Excel usando =ÉTEXTO() ou =Célula+0 (que retorna #VALOR!). Olhar a barra de fórmulas e o alinhamento.
+Causa: Erro na lógica de exportação do sistema (backend), que inclui caracteres não numéricos (R$, espaços) ou formata a célula como texto.
+Solução: Corrigir o backend. Fornecer workaround para o cliente (Texto para Colunas).
+Problema: Processo travado em uma etapa (ex: "Aguardando Assinatura", "Notificação Abertura").
+Sintoma: O processo não avança, mesmo após a ação do usuário ou o passar do tempo.
+Diagnóstico: Verificar o status nas tabelas advicemed_process e de log de status. Verificar se um pré-requisito para o avanço falhou.
+Causa Comum: Uma etapa anterior falhou (ex: geração de um documento PDF, como no caso do protocolo 202508AD0818), impedindo que a condição para o próximo passo seja satisfeita. Outra causa é uma inconsistência de estado no banco (ex: processo aguardando assinatura, mas documento já marcado como assinado).
+Investigação: Consultar as tabelas advicemed_file e advicemed_process para comparar estados. Analisar os logs do Datadog no momento da falha.
+Problema: Não é possível abrir/baixar um anexo do histórico.
+Sintoma: Clicar em "Baixar arquivo" não funciona.
+Diagnóstico: Inspecionar a requisição na aba Network. Ver a resposta JSON.
+Causa Comum: O campo file_url no banco de dados (advicemed_file) contém um URL placeholder (.../waiting-file) em vez do URL real do S3.
+Investigação: Consultar a tabela advicemed_file pelo ID do processo e verificar a file_url e file_title para o registro do anexo em questão.
+Problema: Rastrear uma ação de um usuário (ex: de qual e-mail partiu uma escolha).
+Sintoma: O histórico mostra uma ação, mas o e-mail cadastrado é inválido.
+Diagnóstico: O sistema usa o dado cadastrado para rotular o evento no histórico, mas a ação foi disparada por um link público enviado para o e-mail correto.
+Investigação: Encontrar a prova técnica da ação.
+No RedeOPME (legado), consultar gopme_mailtracks e analisar o JSON no campo read_confir para obter data/hora, IP e user agent da leitura.
+No AdviceMed 2.0, usar o Datadog APM Traces. Filtrar pelo horário exato da ação, método (POST/PATCH), e procurar no trace encontrado as tags Client IP, User Agent, e user.email (se houver).
